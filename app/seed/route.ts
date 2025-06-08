@@ -65,12 +65,12 @@ async function seedVirusScans() {
 
 export async function GET() {
   try {
-    await sql.begin(async (sql) => {
-      await seedUsers();
-      await seedTextAnalyses();
-      await seedIpChecks();
-      await seedVirusScans();
-    });
+    await sql.begin(async () => {
+  await seedUsers();
+  await seedTextAnalyses();
+  await seedIpChecks();
+  await seedVirusScans();
+});
 
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error: unknown) {

@@ -17,7 +17,7 @@ export default async function LatestTextAnalyses() {
       </h2>
       <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
         <div className="bg-white px-6">
-          {latestAnalyses.map((item, i) => (
+          {latestAnalyses.map((item: TextAnalysisResult, i: number) => (
             <div
               key={`${item.uuid}-${i}`} // Используем uuid вместо id
               className={clsx(
