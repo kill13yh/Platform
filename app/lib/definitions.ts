@@ -2,84 +2,37 @@
 // It describes the shape of the data, and what data type each property should accept.
 // For simplicity of teaching, we're manually defining these types.
 // However, these types are generated automatically if you're using an ORM such as Prisma.
+// Определения для твоего проекта (ИИ + криптография)
+
+// Пользователь
 export type User = {
   id: string;
-  name: string;
   email: string;
   password: string;
 };
 
-export type Customer = {
-  id: string;
-  name: string;
+// Анализ текста (ИИ)
+export type TextAnalysisResult = {
+  isToxic: boolean;
+  flaggedWords?: string[];
+  summary?: string;
+};
+
+// Проверка IP
+export type IpCheckResult = {
+  malicious: boolean;
+  abuseConfidenceScore?: number;
+  country?: string;
+};
+
+// Результат сканирования данных
+export type VirusScanResult = {
+  infected: boolean;
+  message: string;
+};
+
+// Форма для регистрации/логина
+export type AuthForm = {
   email: string;
-  image_url: string;
-};
-
-export type Invoice = {
-  id: string;
-  customer_id: string;
-  amount: number; // Stored in cents
-  status: 'pending' | 'paid';
-  date: string;
-};
-
-export type Revenue = {
-  month: string;
-  revenue: number;
-};
-
-export type LatestInvoice = {
-  id: string;
-  name: string;
-  image_url: string;
-  email: string;
-  amount: string;
-};
-
-export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
-  amount: number;
-};
-
-export type InvoicesTable = {
-  id: string;
-  customer_id: string;
-  name: string;
-  email: string;
-  image_url: string;
-  date: string;
-  amount: number;
-  status: 'pending' | 'paid';
-};
-
-export type CustomersTableType = {
-  id: string;
-  name: string;
-  email: string;
-  image_url: string;
-  total_invoices: number;
-  total_pending: number;
-  total_paid: number;
-};
-
-export type FormattedCustomersTable = {
-  id: string;
-  name: string;
-  email: string;
-  image_url: string;
-  total_invoices: number;
-  total_pending: string;
-  total_paid: string;
-};
-
-export type CustomerField = {
-  id: string;
-  name: string;
-};
-
-export type InvoiceForm = {
-  id: string;
-  customer_id: string;
-  amount: number;
-  status: 'pending' | 'paid';
+  password: string;
 };
