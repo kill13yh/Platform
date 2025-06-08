@@ -1,38 +1,25 @@
-import CardWrapper from '@/app/ui/dashboard/TextAnalyzerCard';
-import RevenueChart from '@/app/ui/dashboard/revenue-chart';
-import AnalyzeTextForm from '@/app/ui/dashboard/TextAnalyzerCard';
+import TextAnalyzerCardWrapper from '@/app/ui/dashboard/TextAnalyzerCard';
 import { lusitana } from '@/app/ui/fonts';
-import { fetchCardData } from '@/app/lib/data'; // Remove fetchAnalyzeTextForm
 import { Suspense } from 'react';
-import {
-  RevenueChartSkeleton,
-  AnalyzeTextFormSkeleton,
-  CardsSkeleton,
-} from '@/app/ui/skeletons';
- 
-export default async function Page() {
-  // Remove `const AnalyzeTextForm = await fetchAnalyzeTextForm()`
-  const {
-    numberOfInvoices,
-    numberOfCustomers,
-    totalPaidInvoices,
-    totalPendingInvoices,
-  } = await fetchCardData();
- 
+import { CardsSkeleton, AnalyzeTextFormSkeleton } from '@/app/ui/skeletons';
+import AnalyzeTextForm from '@/app/ui/dashboard/AnalyzeTextForm';
+
+export default function Page() {
   return (
     <main>
       <h1 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
         Dashboard
       </h1>
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+
+      {/* Карточки статистики */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         <Suspense fallback={<CardsSkeleton />}>
-          <CardWrapper />
+          <TextAnalyzerCardWrapper />
         </Suspense>
       </div>
-      <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-4 lg:grid-cols-8">
-        <Suspense fallback={<RevenueChartSkeleton />}>
-          <RevenueChart />
-        </Suspense>
+
+      {/* Форма для анализа текста */}
+      <div className="mt-6">
         <Suspense fallback={<AnalyzeTextFormSkeleton />}>
           <AnalyzeTextForm />
         </Suspense>
