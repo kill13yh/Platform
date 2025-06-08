@@ -15,18 +15,16 @@ async function seedUsers() {
     );
   `;
 
-  const insertedUsers = await Promise.all(
+  await Promise.all(
     users.map(async (user) => {
       const hashedPassword = await bcrypt.hash(user.password, 10);
-      return sql`
+      await sql`
         INSERT INTO users (id, email, password)
         VALUES (${user.id}, ${user.email}, ${hashedPassword})
         ON CONFLICT (id) DO NOTHING;
       `;
     })
   );
-
-  return insertedUsers;
 }
 
 async function seedTextAnalyses() {
@@ -75,8 +73,12 @@ export async function GET() {
     });
 
     return Response.json({ message: 'Database seeded successfully' });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Seeding error:', error);
-    return Response.json({ error: error.message }, { status: 500 });
+
+    // Приводим к типу Error, чтобы получить доступ к error.message
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+
+    return Response.json({ error: errorMessage }, { status: 500 });
   }
 }

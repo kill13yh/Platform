@@ -13,9 +13,10 @@ export type User = {
 
 // Анализ текста (ИИ)
 export type TextAnalysisResult = {
-  isToxic: boolean;
-  flaggedWords?: string[];
-  summary?: string;
+  uuid: string;           // уникальный идентификатор
+  text: string;           // текст
+  created_at: string;     // дата создания
+  isToxic: boolean;       // токсичность
 };
 
 // Проверка IP
