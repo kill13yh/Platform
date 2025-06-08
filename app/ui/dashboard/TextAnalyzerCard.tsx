@@ -1,36 +1,27 @@
-import {
-  BanknotesIcon,
-  ClockIcon,
-  UserGroupIcon,
-  InboxIcon,
-} from '@heroicons/react/24/outline';
+import { ShieldCheckIcon, GlobeAltIcon, BugAntIcon } from '@heroicons/react/24/outline';
 import { lusitana } from '@/app/ui/fonts';
-import { fetchCardData } from '@/app/lib/data';
 
+// Маппинг иконок под задачи проекта
 const iconMap = {
-  collected: BanknotesIcon,
-  customers: UserGroupIcon,
-  pending: ClockIcon,
-  invoices: InboxIcon,
+  textAnalysis: ShieldCheckIcon,
+  ipCheck: GlobeAltIcon,
+  virusScan: BugAntIcon,
 };
 
-export default async function CardWrapper() {
-  const {
-    totalPaidInvoices,
-    totalPendingInvoices,
-    numberOfInvoices,
-    numberOfCustomers,
-  } = await fetchCardData();
+type CardType = 'textAnalysis' | 'ipCheck' | 'virusScan';
+
+export default function TextAnalyzerCardWrapper() {
+  // Здесь можно получать статистику из базы или API
+  // Для упрощения используем демо-данные
+  const totalTextAnalyses = 42;
+  const totalIpChecks = 17;
+  const totalVirusScans = 8;
+
   return (
     <>
-      <Card title="Collected" value={totalPaidInvoices} type="collected" />
-      <Card title="Pending" value={totalPendingInvoices} type="pending" />
-      <Card title="Total Invoices" value={numberOfInvoices} type="invoices" />
-      <Card
-        title="Total Customers"
-        value={numberOfCustomers}
-        type="customers"
-      />
+      <Card title="Text Analyses" value={totalTextAnalyses} type="textAnalysis" />
+      <Card title="IP Checks" value={totalIpChecks} type="ipCheck" />
+      <Card title="Virus Scans" value={totalVirusScans} type="virusScan" />
     </>
   );
 }
@@ -42,14 +33,14 @@ export function Card({
 }: {
   title: string;
   value: number | string;
-  type: 'invoices' | 'customers' | 'pending' | 'collected';
+  type: CardType;
 }) {
   const Icon = iconMap[type];
 
   return (
     <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
       <div className="flex p-4">
-        {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
+        {Icon && <Icon className="h-5 w-5 text-gray-700" />}
         <h3 className="ml-2 text-sm font-medium">{title}</h3>
       </div>
       <p
