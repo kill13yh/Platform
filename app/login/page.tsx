@@ -4,7 +4,7 @@ import { lusitana } from '@/app/ui/fonts';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Button } from '@/app/ui/button';
-import AcmeLogo from '@/app/ui/secure-logo'; // или '@/app/ui/secure-logo', если ты переименовал
+import SecureLogo from '@/app/ui/secure-logo'; 
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -25,7 +25,7 @@ export default function LoginPage() {
   return (
     <main className="flex min-h-screen flex-col p-6 bg-gray-50">
       <div className="flex h-20 shrink-0 items-end rounded-lg bg-blue-500 p-4 md:h-52">
-        <AcmeLogo />
+        <SecureLogo />
       </div>
       <div className="mt-10 flex grow flex-col items-center justify-center">
         <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">

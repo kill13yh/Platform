@@ -17,12 +17,13 @@ export type Customer = {
 };
 
 export type Invoice = {
-  id: string; // Will be created on the database
+  id: string;
   customer_id: string;
   amount: number; // Stored in cents
   status: 'pending' | 'paid';
   date: string;
 };
+
 export type Revenue = {
   month: string;
   revenue: number;
@@ -36,7 +37,6 @@ export type LatestInvoice = {
   amount: string;
 };
 
-// The database returns a number for amount, but we later format it to a string with the formatCurrency function
 export type LatestInvoiceRaw = Omit<LatestInvoice, 'amount'> & {
   amount: number;
 };

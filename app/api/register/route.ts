@@ -1,20 +1,41 @@
 import { NextResponse } from 'next/server';
+import bcrypt from 'bcrypt';
+import postgres from 'postgres';
+import { encrypt } from '@/app/lib/utils';
+
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
+  try {
+    const { email, password } = await req.json();
 
-  // Простейшая заглушка регистрации
-  // Здесь вместо этого подключи базу данных (Postgres, MongoDB и т.д.)
-  if (!email || !password) {
-    return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
+    if (!email || !password) {
+      return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
+    }
+
+    // Шифруем email перед сохранением
+    const encryptedEmail = encrypt(email);
+
+    // Проверяем наличие пользователя
+    const existingUser = await sql`
+      SELECT * FROM users WHERE email = ${encryptedEmail};
+    `;
+    if (existingUser.length > 0) {
+      return NextResponse.json({ error: 'User already exists.' }, { status: 409 });
+    }
+
+    // Хешируем пароль
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Сохраняем пользователя
+    await sql`
+      INSERT INTO users (email, password)
+      VALUES (${encryptedEmail}, ${hashedPassword});
+    `;
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Registration error:', error);
+    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
   }
-
-  // Проверим, не существует ли пользователь (эмуляция)
-  if (email === 'existing@example.com') {
-    return NextResponse.json({ error: 'User already exists' }, { status: 409 });
-  }
-
-  // TODO: Хеширование пароля и сохранение пользователя в базе
-  // Для демонстрации просто вернём успешный результат
-  return NextResponse.json({ success: true });
 }
