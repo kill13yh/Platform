@@ -1,71 +1,51 @@
 'use client';
 
-import { useState } from 'react';
-import { Button } from '@/app/ui/button';
+import { ArrowPathIcon } from '@heroicons/react/24/outline';
+import clsx from 'clsx';
 import { lusitana } from '@/app/ui/fonts';
+import { TextAnalysisResult } from '@/app/lib/definitions';
 
-export default function AnalyzeTextForm() {
-  const [text, setText] = useState('');
-  const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-
-  const handleAnalyze = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    setResult(null);
-
-    try {
-      const response = await fetch('/api/analyze', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ text }),
-      });
-
-      const data = await response.json();
-      setResult(data);
-    } catch (err) {
-      console.error('Analyze error:', err);
-      setError('Failed to analyze text.');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+export default function AnalyzeTextForm({
+  latestAnalyses
+}: {
+  latestAnalyses: TextAnalysisResult[];
+}) {
   return (
-    <div className="rounded-lg bg-gray-50 p-6 shadow-md">
-      <h2 className={`${lusitana.className} mb-4 text-lg font-semibold`}>
-        Analyze Text
+    <div className="flex w-full flex-col md:col-span-4">
+      <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
+        Latest Text Analyses
       </h2>
-      <form onSubmit={handleAnalyze} className="space-y-4">
-        <textarea
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Enter text for analysis..."
-          className="w-full rounded-md border border-gray-300 p-2"
-          rows={4}
-          required
-        />
-        <Button type="submit" disabled={loading} className="bg-blue-600 hover:bg-blue-500">
-          {loading ? 'Analyzing...' : 'Analyze'}
-        </Button>
-      </form>
-
-      {error && (
-        <p className="mt-4 text-red-600">{error}</p>
-      )}
-
-      {result && (
-        <div className="mt-4 p-4 rounded bg-white shadow">
-          <h3 className="font-medium">Analysis Result:</h3>
-          <pre className="whitespace-pre-wrap">
-            {JSON.stringify(result, null, 2)}
-          </pre>
+      <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
+        <div className="bg-white px-6">
+          {latestAnalyses.map((item, i) => (
+            <div
+              key={`${item.uuid}-${i}`}
+              className={clsx(
+                'flex flex-row items-center justify-between py-4',
+                { 'border-t': i !== 0 }
+              )}
+            >
+              <div className="min-w-0">
+                <p className="truncate text-sm font-semibold md:text-base">
+                  {item.text?.slice(0, 20) || 'No Text'}
+                </p>
+                <p className="hidden text-sm text-gray-500 sm:block">
+                  {new Date(item.created_at).toLocaleDateString() || 'N/A'}
+                </p>
+              </div>
+              <p
+                className={`${lusitana.className} truncate text-sm font-medium md:text-base`}
+              >
+                {item.isToxic ? 'Toxic' : 'Clean'}
+              </p>
+            </div>
+          ))}
         </div>
-      )}
+        <div className="flex items-center pb-2 pt-6">
+          <ArrowPathIcon className="h-5 w-5 text-gray-500" />
+          <h3 className="ml-2 text-sm text-gray-500">Updated just now</h3>
+        </div>
+      </div>
     </div>
   );
 }

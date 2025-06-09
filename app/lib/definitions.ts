@@ -13,23 +13,28 @@ export type User = {
 
 // Анализ текста (ИИ)
 export type TextAnalysisResult = {
-  uuid: string;           // уникальный идентификатор
-  text: string;           // текст
-  created_at: string;     // дата создания
-  isToxic: boolean;       // токсичность
+  uuid: string;
+  text: string;
+  isToxic: boolean;
+  created_at: string;
 };
 
 // Проверка IP
 export type IpCheckResult = {
+  id: string;
+  ip: string;
   malicious: boolean;
-  abuseConfidenceScore?: number;
-  country?: string;
+  abuseConfidenceScore: number;
+  country: string;
+  checked_at: string;
 };
 
-// Результат сканирования данных
 export type VirusScanResult = {
+  id: string;
+  data: string;
   infected: boolean;
   message: string;
+  scanned_at: string;
 };
 
 // Форма для регистрации/логина

@@ -5,8 +5,16 @@ import {
   VirusScanResult
 } from './definitions';
 
-// Настройка подключения к базе данных Neon
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
+// Настройка подключения к PostgreSQL
+// Использует переменные окружения или локальные значения по умолчанию
+const sql = postgres({
+  host: process.env.POSTGRES_HOST || 'localhost',
+  port: Number(process.env.POSTGRES_PORT) || 5432,
+  database: process.env.POSTGRES_DB || 'myprojectdb',
+  username: process.env.POSTGRES_USER || 'myuser',
+  password: process.env.POSTGRES_PASSWORD || 'mypassword',
+  ssl: false // Для локальной разработки ssl: false
+});
 
 /**
  * Получение количества анализов текста
@@ -53,7 +61,7 @@ export async function fetchVirusScanCount(): Promise<number> {
 export async function fetchLatestTextAnalyses(limit: number = 5): Promise<TextAnalysisResult[]> {
   try {
     const data = await sql<TextAnalysisResult[]>`
-      SELECT uuid, text, isToxic, created_at
+      SELECT id, text, isToxic, created_at
       FROM text_analyses
       ORDER BY created_at DESC
       LIMIT ${limit};

@@ -1,21 +1,31 @@
 import postgres from 'postgres';
+import { NextResponse } from 'next/server';
 
-const sql = postgres(process.env.POSTGRES_URL!, { ssl: require });
+// Создаём подключение к БД Neon
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-async function listInvoices() {
+// Пример: Получить последние токсичные тексты
+async function listToxicTextAnalyses() {
   const data = await sql`
-    SELECT invoices.amount, customers.name
-    FROM invoices
-    JOIN customers ON invoices.customer_id = customers.id
-    WHERE invoices.amount = 666
+    SELECT text, isToxic, created_at
+    FROM text_analyses
+    WHERE isToxic = true
+    ORDER BY created_at DESC
+    LIMIT 10
   `;
   return data;
 }
 
+// Обработчик GET-запроса
 export async function GET() {
   try {
-    return Response.json(await listInvoices());
-  } catch (error) {
-    return Response.json({ error }, { status: 500 });
+    const result = await listToxicTextAnalyses();
+    return NextResponse.json(result);
+  } catch (error: any) {
+    console.error('Database query error:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch toxic text analyses.' },
+      { status: 500 }
+    );
   }
 }
