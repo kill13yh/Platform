@@ -8,8 +8,10 @@ import { TextAnalysisResult } from '@/app/lib/definitions';
 export default function AnalyzeTextForm({
   latestAnalyses
 }: {
-  latestAnalyses: TextAnalysisResult[];
+  latestAnalyses?: TextAnalysisResult[];  // Добавим ? чтобы сделать latestAnalyses необязательным
 }) {
+  const analyses = latestAnalyses ?? [];  // Используем пустой массив как запасной вариант
+
   return (
     <div className="flex w-full flex-col md:col-span-4">
       <h2 className={`${lusitana.className} mb-4 text-xl md:text-2xl`}>
@@ -17,9 +19,9 @@ export default function AnalyzeTextForm({
       </h2>
       <div className="flex grow flex-col justify-between rounded-xl bg-gray-50 p-4">
         <div className="bg-white px-6">
-          {latestAnalyses.map((item: TextAnalysisResult, i: number) => (
+          {analyses.map((item: TextAnalysisResult, i: number) => (
             <div
-              key={`${item.uuid}-${i}`}
+              key={`${item.id || i}`}
               className={clsx(
                 'flex flex-row items-center justify-between py-4',
                 { 'border-t': i !== 0 }
@@ -30,7 +32,9 @@ export default function AnalyzeTextForm({
                   {item.text?.slice(0, 20) || 'No Text'}
                 </p>
                 <p className="hidden text-sm text-gray-500 sm:block">
-                  {new Date(item.created_at).toLocaleDateString() || 'N/A'}
+                  {item.created_at
+                    ? new Date(item.created_at).toLocaleDateString()
+                    : 'N/A'}
                 </p>
               </div>
               <p
