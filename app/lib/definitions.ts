@@ -42,3 +42,10 @@ export type AuthForm = {
   email: string;
   password: string;
 };
+
+
+// Данные о доходах для графика
+export type Revenue = {
+  month: string;
+  revenue: number;
+};

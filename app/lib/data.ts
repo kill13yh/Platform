@@ -2,8 +2,10 @@ import postgres from 'postgres';
 import {
   TextAnalysisResult,
   IpCheckResult,
-  VirusScanResult
+  VirusScanResult,
+  Revenue
 } from './definitions';
+import { revenue as revenueData } from './placeholder-data';
 
 // Настройка подключения к PostgreSQL
 // Использует переменные окружения или локальные значения по умолчанию
@@ -106,5 +108,24 @@ export async function fetchLatestVirusScans(limit: number = 5): Promise<VirusSca
   } catch (error: unknown) {
     console.error('Database Error [fetchLatestVirusScans]:', error);
     throw new Error('Failed to fetch latest virus scans.');
+  }
+}
+
+
+/**
+ * Получение данных о доходах за последние месяцы
+ */
+export async function fetchRevenue(): Promise<Revenue[]> {
+  try {
+    // В реальном приложении здесь могла бы быть выборка из таблицы `revenue`
+    // Например:
+    // const data = await sql<Revenue[]>`SELECT month, revenue FROM revenue ORDER BY month;`;
+    // return data;
+
+    // Пока используем локальные заглушки
+    return revenueData;
+  } catch (error: unknown) {
+    console.error('Database Error [fetchRevenue]:', error);
+    throw new Error('Failed to fetch revenue.');
   }
 }
