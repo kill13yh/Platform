@@ -1,6 +1,8 @@
 import postgres from 'postgres';
 import { NextResponse } from 'next/server';
 
+export const runtime = 'nodejs';
+
 // Создаём подключение к БД Neon
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 

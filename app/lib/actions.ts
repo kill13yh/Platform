@@ -24,11 +24,11 @@ export type State = {
 };
 
 // ✅ Создание новой записи в text_analyses
-export async function createTextAnalysis(prevState: State, formData: FormData) {
-  const validatedFields = TextAnalysisSchema.safeParse({
-    text: formData.get('text'),
-    isToxic: formData.get('isToxic') === 'true',
-  });
+export async function createTextAnalysis(
+  prevState: State,
+  data: { text: string; isToxic: boolean }
+) {
+  const validatedFields = TextAnalysisSchema.safeParse(data);
 
   if (!validatedFields.success) {
     return {
@@ -40,17 +40,26 @@ export async function createTextAnalysis(prevState: State, formData: FormData) {
   const { text, isToxic } = validatedFields.data;
 
   try {
-    await sql`
+    // Вставляем данные в базу данных
+    const inserted = await sql`
       INSERT INTO text_analyses (text, isToxic)
-      VALUES (${text}, ${isToxic});
+      VALUES (${text}, ${isToxic})
+      RETURNING id, text, isToxic, created_at;
     `;
-    revalidatePath('/dashboard');
-    return { message: 'Text analysis created successfully.' };
+
+    const analysis = inserted[0];
+
+    revalidatePath('/dashboard/text-analyses');
+    return {
+      message: 'Text analysis created successfully.',
+      analysis, // <-- возвращаем свежую запись
+    };
   } catch (error) {
     console.error('Database Error [createTextAnalysis]:', error);
     return { message: 'Database Error: Failed to create text analysis.' };
   }
 }
+
 
 // 📌 Валидация для IP Checks
 const IpCheckSchema = z.object({
@@ -61,13 +70,16 @@ const IpCheckSchema = z.object({
 });
 
 // ✅ Создание новой записи в ip_checks
-export async function createIpCheck(prevState: State, formData: FormData) {
-  const validatedFields = IpCheckSchema.safeParse({
-    ip: formData.get('ip'),
-    malicious: formData.get('malicious') === 'true',
-    abuseConfidenceScore: formData.get('abuseConfidenceScore'),
-    country: formData.get('country') || null,
-  });
+export async function createIpCheck(
+  prevState: State,
+  data: {
+    ip: string;
+    malicious: boolean;
+    abuseConfidenceScore: number;
+    country?: string | null;
+  }
+) {
+  const validatedFields = IpCheckSchema.safeParse(data);
 
   if (!validatedFields.success) {
     return {
@@ -83,7 +95,7 @@ export async function createIpCheck(prevState: State, formData: FormData) {
       INSERT INTO ip_checks (ip, malicious, abuse_confidence_score, country)
       VALUES (${ip}, ${malicious}, ${abuseConfidenceScore}, ${country});
     `;
-    revalidatePath('/dashboard');
+    revalidatePath('/dashboard/ip-checks');
     return { message: 'IP check created successfully.' };
   } catch (error) {
     console.error('Database Error [createIpCheck]:', error);
@@ -99,12 +111,11 @@ const VirusScanSchema = z.object({
 });
 
 // ✅ Создание новой записи в virus_scans
-export async function createVirusScan(prevState: State, formData: FormData) {
-  const validatedFields = VirusScanSchema.safeParse({
-    data: formData.get('data'),
-    infected: formData.get('infected') === 'true',
-    message: formData.get('message') || null,
-  });
+export async function createVirusScan(
+  prevState: State,
+  data: { data: string; infected: boolean; message?: string | null }
+) {
+  const validatedFields = VirusScanSchema.safeParse(data);
 
   if (!validatedFields.success) {
     return {
@@ -113,14 +124,14 @@ export async function createVirusScan(prevState: State, formData: FormData) {
     };
   }
 
-  const { data, infected, message } = validatedFields.data;
+  const { data: fileData, infected, message } = validatedFields.data;
 
   try {
     await sql`
       INSERT INTO virus_scans (data, infected, message)
-      VALUES (${data}, ${infected}, ${message});
+      VALUES (${fileData}, ${infected}, ${message});
     `;
-    revalidatePath('/dashboard');
+    revalidatePath('/dashboard/virus-scans');
     return { message: 'Virus scan created successfully.' };
   } catch (error) {
     console.error('Database Error [createVirusScan]:', error);
@@ -128,13 +139,17 @@ export async function createVirusScan(prevState: State, formData: FormData) {
   }
 }
 
-// ✅ Добавляем функцию authenticate
+// ✅ Аутентификация
 export async function authenticate(
   prevState: string | undefined,
-  formData: FormData
+  data: { email: string; password: string }
 ) {
   try {
-    await signIn('credentials', formData);
+    await signIn('credentials', {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {

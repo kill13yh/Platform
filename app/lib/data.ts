@@ -5,6 +5,8 @@ import {
   VirusScanResult
 } from './definitions';
 
+
+export const runtime = 'nodejs';
 // Настройка подключения к PostgreSQL
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
