@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
-import { users } from '../lib/placeholder-data';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -16,17 +15,6 @@ async function seedUsers() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `;
-
-  await Promise.all(
-    users.map(async (user) => {
-      const hashedPassword = await bcrypt.hash(user.password, 10);
-      await sql`
-        INSERT INTO users (id, email, password)
-        VALUES (${user.id}, ${user.email}, ${hashedPassword})
-        ON CONFLICT (id) DO NOTHING;
-      `;
-    })
-  );
 
   console.log('✅ Таблица users успешно создана и заполнена.');
 }
@@ -64,16 +52,18 @@ async function seedIpChecks() {
 // Создание таблицы вирус-сканов
 async function seedVirusScans() {
   await sql`
+    CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+  `;
+
+  await sql`
     CREATE TABLE IF NOT EXISTS virus_scans (
-      id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
       data TEXT NOT NULL,
       infected BOOLEAN NOT NULL,
       message TEXT,
       scanned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `;
-
-  console.log('✅ Таблица virus_scans создана.');
 }
 
 // API-эндпоинт для сидирования базы данных

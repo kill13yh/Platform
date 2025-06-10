@@ -2,21 +2,11 @@ import postgres from 'postgres';
 import {
   TextAnalysisResult,
   IpCheckResult,
-  VirusScanResult,
-  Revenue
+  VirusScanResult
 } from './definitions';
-import { revenue as revenueData } from './placeholder-data';
 
 // Настройка подключения к PostgreSQL
-// Использует переменные окружения или локальные значения по умолчанию
-const sql = postgres({
-  host: process.env.POSTGRES_HOST || 'localhost',
-  port: Number(process.env.POSTGRES_PORT) || 5432,
-  database: process.env.POSTGRES_DB || 'myprojectdb',
-  username: process.env.POSTGRES_USER || 'myuser',
-  password: process.env.POSTGRES_PASSWORD || 'mypassword',
-  ssl: false // Для локальной разработки ssl: false
-});
+const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
 /**
  * Получение количества анализов текста
@@ -108,24 +98,5 @@ export async function fetchLatestVirusScans(limit: number = 5): Promise<VirusSca
   } catch (error: unknown) {
     console.error('Database Error [fetchLatestVirusScans]:', error);
     throw new Error('Failed to fetch latest virus scans.');
-  }
-}
-
-
-/**
- * Получение данных о доходах за последние месяцы
- */
-export async function fetchRevenue(): Promise<Revenue[]> {
-  try {
-    // В реальном приложении здесь могла бы быть выборка из таблицы `revenue`
-    // Например:
-    // const data = await sql<Revenue[]>`SELECT month, revenue FROM revenue ORDER BY month;`;
-    // return data;
-
-    // Пока используем локальные заглушки
-    return revenueData;
-  } catch (error: unknown) {
-    console.error('Database Error [fetchRevenue]:', error);
-    throw new Error('Failed to fetch revenue.');
   }
 }

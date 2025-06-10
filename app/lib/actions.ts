@@ -2,118 +2,133 @@
 
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 import postgres from 'postgres';
 import { signIn } from '@/auth';
 import { AuthError } from 'next-auth';
 
+// Настройка подключения к базе данных PostgreSQL
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
-// 📝 Валидация форм
-const FormSchema = z.object({
-  id: z.string(),
-  customerId: z.string({
-    invalid_type_error: 'Please select a customer.',
-  }),
-  amount: z.coerce
-    .number()
-    .gt(0, { message: 'Please enter an amount greater than $0.' }),
-  status: z.enum(['pending', 'paid'], {
-    invalid_type_error: 'Please select an invoice status.',
-  }),
-  date: z.string(),
+// 📌 Валидация для текстовых анализов
+const TextAnalysisSchema = z.object({
+  text: z.string().min(1, 'Text cannot be empty'),
+  isToxic: z.boolean(),
 });
-
-const CreateInvoice = FormSchema.omit({ id: true, date: true });
-const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
 export type State = {
   errors?: {
-    customerId?: string[];
-    amount?: string[];
-    status?: string[];
+    text?: string[];
+    isToxic?: string[];
   };
   message?: string | null;
 };
 
-export async function createInvoice(prevState: State, formData: FormData) {
-  const validatedFields = CreateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+// ✅ Создание новой записи в text_analyses
+export async function createTextAnalysis(prevState: State, formData: FormData) {
+  const validatedFields = TextAnalysisSchema.safeParse({
+    text: formData.get('text'),
+    isToxic: formData.get('isToxic') === 'true',
   });
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Create Invoice.',
+      message: 'Missing or invalid fields. Failed to create text analysis.',
     };
   }
 
-  const { customerId, amount, status } = validatedFields.data;
-  const amountInCents = amount * 100;
-  const date = new Date().toISOString().split('T')[0];
+  const { text, isToxic } = validatedFields.data;
 
   try {
     await sql`
-      INSERT INTO invoices (customer_id, amount, status, date)
-      VALUES (${customerId}, ${amountInCents}, ${status}, ${date});
+      INSERT INTO text_analyses (text, isToxic)
+      VALUES (${text}, ${isToxic});
     `;
-    revalidatePath('/dashboard/invoices');
-    redirect('/dashboard/invoices');
+    revalidatePath('/dashboard');
+    return { message: 'Text analysis created successfully.' };
   } catch (error) {
-    console.error('Database Error [createInvoice]:', error);
-    return { message: 'Database Error: Failed to Create Invoice.' };
+    console.error('Database Error [createTextAnalysis]:', error);
+    return { message: 'Database Error: Failed to create text analysis.' };
   }
 }
 
-export async function updateInvoice(
-  id: string,
-  prevState: State,
-  formData: FormData
-) {
-  const validatedFields = UpdateInvoice.safeParse({
-    customerId: formData.get('customerId'),
-    amount: formData.get('amount'),
-    status: formData.get('status'),
+// 📌 Валидация для IP Checks
+const IpCheckSchema = z.object({
+  ip: z.string().min(7, 'Invalid IP address'),
+  malicious: z.boolean(),
+  abuseConfidenceScore: z.coerce.number().min(0),
+  country: z.string().optional(),
+});
+
+// ✅ Создание новой записи в ip_checks
+export async function createIpCheck(prevState: State, formData: FormData) {
+  const validatedFields = IpCheckSchema.safeParse({
+    ip: formData.get('ip'),
+    malicious: formData.get('malicious') === 'true',
+    abuseConfidenceScore: formData.get('abuseConfidenceScore'),
+    country: formData.get('country') || null,
   });
 
   if (!validatedFields.success) {
     return {
       errors: validatedFields.error.flatten().fieldErrors,
-      message: 'Missing Fields. Failed to Update Invoice.',
+      message: 'Missing or invalid fields. Failed to create IP check.',
     };
   }
 
-  const { customerId, amount, status } = validatedFields.data;
-  const amountInCents = amount * 100;
+  const { ip, malicious, abuseConfidenceScore, country } = validatedFields.data;
 
   try {
     await sql`
-      UPDATE invoices
-      SET customer_id = ${customerId}, amount = ${amountInCents}, status = ${status}
-      WHERE id = ${id};
+      INSERT INTO ip_checks (ip, malicious, abuse_confidence_score, country)
+      VALUES (${ip}, ${malicious}, ${abuseConfidenceScore}, ${country});
     `;
-    revalidatePath('/dashboard/invoices');
-    redirect('/dashboard/invoices');
+    revalidatePath('/dashboard');
+    return { message: 'IP check created successfully.' };
   } catch (error) {
-    console.error('Database Error [updateInvoice]:', error);
-    return { message: 'Database Error: Failed to Update Invoice.' };
+    console.error('Database Error [createIpCheck]:', error);
+    return { message: 'Database Error: Failed to create IP check.' };
   }
 }
 
-export async function deleteInvoice(id: string) {
+// 📌 Валидация для Virus Scans
+const VirusScanSchema = z.object({
+  data: z.string().min(1, 'Data cannot be empty'),
+  infected: z.boolean(),
+  message: z.string().optional(),
+});
+
+// ✅ Создание новой записи в virus_scans
+export async function createVirusScan(prevState: State, formData: FormData) {
+  const validatedFields = VirusScanSchema.safeParse({
+    data: formData.get('data'),
+    infected: formData.get('infected') === 'true',
+    message: formData.get('message') || null,
+  });
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing or invalid fields. Failed to create virus scan.',
+    };
+  }
+
+  const { data, infected, message } = validatedFields.data;
+
   try {
     await sql`
-      DELETE FROM invoices WHERE id = ${id};
+      INSERT INTO virus_scans (data, infected, message)
+      VALUES (${data}, ${infected}, ${message});
     `;
-    revalidatePath('/dashboard/invoices');
+    revalidatePath('/dashboard');
+    return { message: 'Virus scan created successfully.' };
   } catch (error) {
-    console.error('Database Error [deleteInvoice]:', error);
-    throw new Error('Failed to Delete Invoice.');
+    console.error('Database Error [createVirusScan]:', error);
+    return { message: 'Database Error: Failed to create virus scan.' };
   }
 }
 
+// ✅ Добавляем функцию authenticate
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData

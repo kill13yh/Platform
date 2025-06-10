@@ -5,10 +5,92 @@
         "app/dashboard/(overview)/page": {
           "moduleId": "(rsc)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Cui%5C%5Cdashboard%5C%5Csidenav.tsx%22%2C%5B%7B%22id%22%3A%22009df56671013ed51bed935d1adc94b974f21e60ab%22%2C%22exportedName%22%3A%22%24%24RSC_SERVER_ACTION_0%22%7D%5D%5D%5D&__client_imported__=!",
           "async": false
+        },
+        "app/dashboard/page": {
+          "moduleId": "(rsc)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Cui%5C%5Cdashboard%5C%5Csidenav.tsx%22%2C%5B%7B%22id%22%3A%22009df56671013ed51bed935d1adc94b974f21e60ab%22%2C%22exportedName%22%3A%22%24%24RSC_SERVER_ACTION_0%22%7D%5D%5D%5D&__client_imported__=!",
+          "async": false
         }
       },
       "layer": {
-        "app/dashboard/(overview)/page": "rsc"
+        "app/dashboard/(overview)/page": "rsc",
+        "app/dashboard/page": "rsc"
+      }
+    },
+    "40a7b127f173782fc534b6cbaec1a9a000616ed55e": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Clib%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22602a05a96dc207bb58beb71baf216648b0456e9d2d%22%2C%22exportedName%22%3A%22createTextAnalysis%22%7D%2C%7B%22id%22%3A%22603b53f568a0dd993bcf15d43c30be4e4ad008347f%22%2C%22exportedName%22%3A%22createVirusScan%22%7D%2C%7B%22id%22%3A%22605b82a4a99c31d1ac95ebe674ed72169ec5c21395%22%2C%22exportedName%22%3A%22authenticate%22%7D%2C%7B%22id%22%3A%2260a3aa8e625f9f10941e24233f6352c7f75f8920f0%22%2C%22exportedName%22%3A%22createIpCheck%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "605b82a4a99c31d1ac95ebe674ed72169ec5c21395": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Clib%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22602a05a96dc207bb58beb71baf216648b0456e9d2d%22%2C%22exportedName%22%3A%22createTextAnalysis%22%7D%2C%7B%22id%22%3A%22603b53f568a0dd993bcf15d43c30be4e4ad008347f%22%2C%22exportedName%22%3A%22createVirusScan%22%7D%2C%7B%22id%22%3A%22605b82a4a99c31d1ac95ebe674ed72169ec5c21395%22%2C%22exportedName%22%3A%22authenticate%22%7D%2C%7B%22id%22%3A%2260a3aa8e625f9f10941e24233f6352c7f75f8920f0%22%2C%22exportedName%22%3A%22createIpCheck%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "60faf3c4f0001bbfdb4d086f635c4b35e96e054692": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Clib%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22602a05a96dc207bb58beb71baf216648b0456e9d2d%22%2C%22exportedName%22%3A%22createTextAnalysis%22%7D%2C%7B%22id%22%3A%22603b53f568a0dd993bcf15d43c30be4e4ad008347f%22%2C%22exportedName%22%3A%22createVirusScan%22%7D%2C%7B%22id%22%3A%22605b82a4a99c31d1ac95ebe674ed72169ec5c21395%22%2C%22exportedName%22%3A%22authenticate%22%7D%2C%7B%22id%22%3A%2260a3aa8e625f9f10941e24233f6352c7f75f8920f0%22%2C%22exportedName%22%3A%22createIpCheck%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "70c3e416356ea990c8d961f4099402504d98d804a2": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Clib%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22602a05a96dc207bb58beb71baf216648b0456e9d2d%22%2C%22exportedName%22%3A%22createTextAnalysis%22%7D%2C%7B%22id%22%3A%22603b53f568a0dd993bcf15d43c30be4e4ad008347f%22%2C%22exportedName%22%3A%22createVirusScan%22%7D%2C%7B%22id%22%3A%22605b82a4a99c31d1ac95ebe674ed72169ec5c21395%22%2C%22exportedName%22%3A%22authenticate%22%7D%2C%7B%22id%22%3A%2260a3aa8e625f9f10941e24233f6352c7f75f8920f0%22%2C%22exportedName%22%3A%22createIpCheck%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "602a05a96dc207bb58beb71baf216648b0456e9d2d": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Clib%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22602a05a96dc207bb58beb71baf216648b0456e9d2d%22%2C%22exportedName%22%3A%22createTextAnalysis%22%7D%2C%7B%22id%22%3A%22603b53f568a0dd993bcf15d43c30be4e4ad008347f%22%2C%22exportedName%22%3A%22createVirusScan%22%7D%2C%7B%22id%22%3A%22605b82a4a99c31d1ac95ebe674ed72169ec5c21395%22%2C%22exportedName%22%3A%22authenticate%22%7D%2C%7B%22id%22%3A%2260a3aa8e625f9f10941e24233f6352c7f75f8920f0%22%2C%22exportedName%22%3A%22createIpCheck%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "603b53f568a0dd993bcf15d43c30be4e4ad008347f": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Clib%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22602a05a96dc207bb58beb71baf216648b0456e9d2d%22%2C%22exportedName%22%3A%22createTextAnalysis%22%7D%2C%7B%22id%22%3A%22603b53f568a0dd993bcf15d43c30be4e4ad008347f%22%2C%22exportedName%22%3A%22createVirusScan%22%7D%2C%7B%22id%22%3A%22605b82a4a99c31d1ac95ebe674ed72169ec5c21395%22%2C%22exportedName%22%3A%22authenticate%22%7D%2C%7B%22id%22%3A%2260a3aa8e625f9f10941e24233f6352c7f75f8920f0%22%2C%22exportedName%22%3A%22createIpCheck%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
+      }
+    },
+    "60a3aa8e625f9f10941e24233f6352c7f75f8920f0": {
+      "workers": {
+        "app/login/page": {
+          "moduleId": "(action-browser)/./node_modules/.pnpm/next@15.4.0-canary.70_react_9c010a507b59a5794220fce79603fd42/node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Ckunak%5C%5CDiploma%5C%5Cnextjs-dashboard%5C%5Capp%5C%5Clib%5C%5Cactions.ts%22%2C%5B%7B%22id%22%3A%22602a05a96dc207bb58beb71baf216648b0456e9d2d%22%2C%22exportedName%22%3A%22createTextAnalysis%22%7D%2C%7B%22id%22%3A%22603b53f568a0dd993bcf15d43c30be4e4ad008347f%22%2C%22exportedName%22%3A%22createVirusScan%22%7D%2C%7B%22id%22%3A%22605b82a4a99c31d1ac95ebe674ed72169ec5c21395%22%2C%22exportedName%22%3A%22authenticate%22%7D%2C%7B%22id%22%3A%2260a3aa8e625f9f10941e24233f6352c7f75f8920f0%22%2C%22exportedName%22%3A%22createIpCheck%22%7D%5D%5D%5D&__client_imported__=true!",
+          "async": false
+        }
+      },
+      "layer": {
+        "app/login/page": "action-browser"
       }
     }
   },
