@@ -4,7 +4,7 @@
 import { lusitana } from '@/app/ui/fonts';
 import { RevenueChartSkeleton, LatestAlertsSkeleton, SecurityPanelSkeleton } from '@/app/ui/skeletons';
 import { Suspense } from 'react';
-import { RevenueChart } from '@/app/ui/revenue-chart';
+import RevenueChart from '@/app/ui/revenue-chart';
 import { LatestAlerts } from '@/app/ui/latest-alerts';
 import { SecurityPanel } from '@/app/ui/security-panel';
 

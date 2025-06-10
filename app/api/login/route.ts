@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
-import { encrypt } from '@/app/lib/utils';
+
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -14,11 +14,10 @@ export async function POST(req: Request) {
     }
 
     // Ищем пользователя по email
-    const encryptedEmail = encrypt(email);
     const result = await sql`
-      SSELECT id, email, password
+      SELECT id, email, password
       FROM users
-      WHERE email = ${encryptedEmail};
+      WHERE email = ${email};
     `;
 
     const user = result[0];

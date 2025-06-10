@@ -33,6 +33,17 @@ export function CardsSkeleton() {
   );
 }
 
+export function SecurityPanelSkeleton() {
+  return (
+    <div className="grid w-full gap-6 sm:grid-cols-3">
+      <CardSkeleton />
+      <CardSkeleton />
+      <CardSkeleton />
+    </div>
+  );
+}
+
+
 /**
  * Скелетон для формы анализа текста (AnalyzeTextForm)
  */
@@ -44,6 +55,23 @@ export function AnalyzeTextFormSkeleton() {
       <div className="mt-4 h-10 w-24 rounded bg-gray-300"></div>
     </div>
   );
+}
+
+export function LatestAlertsSkeleton() {
+  return (
+    <div className={`${shimmer} relative flex w-full flex-col overflow-hidden rounded-xl bg-gray-100 p-4`}>
+      <div className="mb-4 h-6 w-1/3 rounded bg-gray-300"></div>
+      <div className="space-y-3">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <div key={i} className="h-4 w-full rounded bg-gray-200" />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export function RevenueChartSkeleton() {
+  return <div className={`${shimmer} h-[350px] w-full rounded-xl bg-gray-100`} />;
 }
 
 /**

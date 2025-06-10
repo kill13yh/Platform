@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import postgres from 'postgres';
-import { encrypt } from '@/app/lib/utils';
 
 const sql = postgres(process.env.POSTGRES_URL!, { ssl: 'require' });
 
@@ -13,12 +12,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Email and password are required.' }, { status: 400 });
     }
 
-    // Шифруем email перед сохранением
-    const encryptedEmail = encrypt(email);
 
     // Проверяем наличие пользователя
     const existingUser = await sql`
-      SELECT * FROM users WHERE email = ${encryptedEmail};
+      SELECT * FROM users WHERE email = ${email};
     `;
     if (existingUser.length > 0) {
       return NextResponse.json({ error: 'User already exists.' }, { status: 409 });
@@ -30,7 +27,7 @@ export async function POST(req: Request) {
     // Сохраняем пользователя
     await sql`
       INSERT INTO users (email, password)
-      VALUES (${encryptedEmail}, ${hashedPassword});
+      VALUES (${email}, ${hashedPassword});
     `;
 
     return NextResponse.json({ success: true });
